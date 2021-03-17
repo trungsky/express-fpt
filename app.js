@@ -21,5 +21,5 @@ app.get("/", HomePage);
 
 // App listen
 app.listen(port, () => {
-  console.log("Server run at: http://localhost:" + port);
+  console.log("Server run at : http://localhost:" + port);
 });
