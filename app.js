@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 import RouterProduct from "./routes/product";
 import HomePage from "./routes/HomePage";
 import morgan from "morgan";
+import mongoose from "mongoose";
+
 dotenv.config();
 
 const app = express();
@@ -14,6 +16,17 @@ const port = process.env.PORT || 8080;
 // Route
 app.use("/api", RouterProduct);
 app.get("/", HomePage);
+
+mongoose
+  .connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    createIndex: true,
+  })
+  .then(() => console.log("DB Connected"));
+
+mongoose.connection.on("error", (err) => {
+  console.log(`DB connection error: ${err.message}`);
+});
 
 // App listen
 app.listen(port, () => {

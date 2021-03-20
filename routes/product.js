@@ -1,20 +1,15 @@
 import express from "express";
-
+import { create, list, findById, deleteById, updateById } from "../controllers/product";
 const router = express.Router();
 
-router.get("/products", (req, res) => {
-  res.send("List products");
-});
+router.get("/products", list);
 
-router.get("/products/:id", (req, res) => {
-  res.json({
-    id: req.params.id,
-    name: `Product ${req.params.id}`,
-  });
-});
+router.get("/products/:id", findById);
 
-router.post("/products", (req, res) => {
-  res.send(req.body);
-});
+router.post("/products", create);
+
+router.delete("/products/:id", deleteById);
+
+router.patch("/products/:id", updateById);
 
 module.exports = router;
