@@ -7,9 +7,10 @@ export const create = (req, res) => {
   form.parse(req, (err, fields, files) => {
     if (err) {
       ers.send("Loi");
+    } else {
+      const product = new Product(fields);
+      console.log(product);
     }
-    console.log(fields);
-    console.log(files.photo.size);
   });
   // const product = new Product(req.body);
   // product.save((err, data) => {
@@ -37,12 +38,13 @@ export const findById = async (req, res) => {
 };
 
 export const deleteById = async (req, res) => {
-  const product = Product.deleteOne({ _id: req.params.id })
+  const product = new Product(req.body);
+  Product.deleteOne({ product })
     .then((data) => {
-      res.json(data);
+      res.json("Xoa thành công");
     })
     .catch((err) => {
-      res.send("Không có nhé" + err);
+      err;
     });
 };
 
@@ -57,7 +59,7 @@ export const updateById = async (req, res) => {
     });
 };
 
-export const updateById = async (req, res, next, id) => {
+export const getParamId = async (req, res, next, id) => {
   //   const product = Product.find({ _id: req.params.id });
   Product.findById(id).exec((err, product) => {
     if (err || !product) {

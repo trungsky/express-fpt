@@ -5,6 +5,7 @@ import {
   findById,
   deleteById,
   updateById,
+  getParamId,
 } from "../controllers/product";
 const router = express.Router();
 
@@ -18,6 +19,6 @@ router.delete("/products/:id", deleteById);
 
 router.patch("/products/:id", updateById);
 
-router.param("id", productById);
+router.param("id", getParamId);
 
 module.exports = router;
