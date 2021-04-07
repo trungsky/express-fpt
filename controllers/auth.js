@@ -1,6 +1,6 @@
 import User from "../models/user";
 import jwt from "jsonwebtoken";
-import expressJwt from "express-jwt";
+// import expressJwt from "express-jwt";
 // import { errorHandler } from "../helpers/dbErrorsHandler";
 
 export const signup = (req, res) => {
@@ -14,17 +14,25 @@ export const signup = (req, res) => {
     res.json({ user });
   });
 };
-export const signin = (req, res) => {
-  const _email = req.body.email;
-  const _password = req.body.password;
-
-  User.exists({ email: _email })
-    .then((user) => {
-      User.find({ email: _email }).then((user) => {
-        res.json(user);
+exports.signin = (req, res) => {
+  const { email, password } = req.body;
+  User.findOne({ email }, (error, user) => {
+    if (error || !user) {
+      return res.status(400).json({
+        error: "User with that email does not exist. Please signup",
       });
-    })
-    .catch((err) => {
-      res.send("Tài khoản không tồn tại");
+    }
+    if (!user.authenticate(password)) {
+      return res.status(401).json({
+        error: "Email and password not match",
+      });
+    }
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+    res.cookie("t", token, { expire: new Date() + 9999 });
+    const { _id, name, email, role } = user;
+    return res.json({
+      token,
+      user: { _id, email, name, role },
     });
+  });
 };

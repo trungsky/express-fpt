@@ -1,4 +1,6 @@
 import express from "express";
+const router = express.Router();
+
 import {
   create,
   list,
@@ -7,7 +9,6 @@ import {
   updateById,
   getParamId,
 } from "../controllers/product";
-const router = express.Router();
 
 router.get("/products", list);
 router.get("/products/:id", findById);

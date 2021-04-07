@@ -5,7 +5,7 @@ export const create = (req, res) => {
   category.save((err, data) => {
     if (err) {
       return res.status(400).json({
-        error: "Không thêm được danh mục",
+        error: `Không thêm được danh mục ${err}`,
       });
     }
     res.json({ data });

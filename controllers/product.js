@@ -3,7 +3,7 @@ import formidable from "formidable";
 import fs from "fs";
 import _ from "lodash";
 
-export const create = async  (req, res) => {
+export const create = async (req, res) => {
   let form = new formidable.IncomingForm();
   form.keepExtensions = true;
   form.parse(req, (err, fields, files) => {
@@ -21,20 +21,23 @@ export const create = async  (req, res) => {
 
     let product = new Product(fields);
     if (files.photo) {
-      if  (files.photo.size > 100000) {
+      if (files.photo.size > 100000) {
         res.status(400).json({
           error: "Bạn nên upload ảnh dưới 1mb",
         });
       }
+      console.log("alo");
+
       product.photo.data = fs.readFileSync(files.photo.path);
       product.photo.ContentType = files.photo.path;
     }
     product.save((err, data) => {
       if (err) {
         res.status(400).json({
-          error: "Không thêm được sản phẩm",
+          error: `Không thêm được sản phẩm - ${err}`,
         });
       }
+
       res.json(data);
     });
   });
@@ -78,7 +81,7 @@ export const updateById = async (req, res) => {
     const { name, description, price } = fields;
     if (!name || !description || !price) {
       return res.status(400).json({
-        error: "Bạn cần nhập đầy đủ thông tin",
+        error: `Bạn cần nhập đầy đủ thông tin `,
       });
     }
 
