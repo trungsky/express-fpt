@@ -1,6 +1,6 @@
 import User from "../models/user";
 import jwt from "jsonwebtoken";
-// import expressJwt from "express-jwt";
+import expressJwt from "express-jwt";
 // import { errorHandler } from "../helpers/dbErrorsHandler";
 
 export const signup = (req, res) => {
@@ -27,7 +27,7 @@ exports.signin = (req, res) => {
         error: "Email and password not match",
       });
     }
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ _id: user._id }, "trungday");
     res.cookie("t", token, { expire: new Date() + 9999 });
     const { _id, name, email, role } = user;
     return res.json({
@@ -35,4 +35,36 @@ exports.signin = (req, res) => {
       user: { _id, email, name, role },
     });
   });
+};
+
+export const signout = (req, res) => {
+  res.clearCookie("t");
+  res.json({
+    message: "Signout Success",
+  });
+};
+
+export const requireSignin = expressJwt({
+  secret: "trungday",
+  algorithms: ["HS256"],
+  userProperty: "auth",
+});
+
+export const isAuth = (req, res, next) => {
+  let user = req.profile && req.auth && req.profile._id == req.auth._id;
+  if (!user) {
+    return res.status(403).json({
+      error: "Access Denied",
+    });
+  }
+  next();
+};
+
+export const isAdmin = (req, res, next) => {
+  if (req.profile.role == 0) {
+    return res.status(403).json({
+      error: "Admin resource! Access Denined",
+    });
+  }
+  next();
 };

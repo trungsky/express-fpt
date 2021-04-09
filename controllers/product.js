@@ -26,10 +26,8 @@ export const create = async (req, res) => {
           error: "Bạn nên upload ảnh dưới 1mb",
         });
       }
-      console.log("alo");
-
       product.photo.data = fs.readFileSync(files.photo.path);
-      product.photo.ContentType = files.photo.path;
+      product.photo.contentType = files.photo.type;
     }
     product.save((err, data) => {
       if (err) {
@@ -49,7 +47,7 @@ export const list = async (req, res) => {
 };
 
 export const findById = async (req, res) => {
-  const product = await Product.find({ _id: req.params.id })
+  const product = await Product.findOne({ _id: req.params.id })
     .then((data) => {
       res.json(data);
     })
@@ -59,10 +57,11 @@ export const findById = async (req, res) => {
 };
 
 export const deleteById = async (req, res) => {
-  const product = new Product(req.body);
-  Product.deleteOne({ product })
+  const product = req.params.id;
+  console.log(product);
+  Product.deleteOne({ _id: product })
     .then((data) => {
-      res.json("Xoa thành công");
+      res.json(`Xóa ô kê`);
     })
     .catch((err) => {
       err;
@@ -88,8 +87,6 @@ export const updateById = async (req, res) => {
     //  let product = new Product(fields);
     let product = req.product;
     product = _.assignIn(product, fields);
-    //1kb = 1000
-    //1mb = 100000
     if (files.photo) {
       if (files.photo.size > 100000) {
         res.status(400).json({
@@ -97,12 +94,13 @@ export const updateById = async (req, res) => {
         });
       }
       product.photo.data = fs.readFileSync(files.photo.path);
-      product.photo.ContentType = files.photo.path;
+      product.photo.contentType = files.photo.type;
+      console.log(product);
     }
     product.save((err, data) => {
       if (err) {
         return res.status(400).json({
-          error: "Không sửa được sản phẩm",
+          error: `Không sửa được sản phẩm ${err}`,
         });
       }
       res.json(data);
@@ -114,7 +112,7 @@ export const getParamId = async (req, res, next, id) => {
   //   const product = Product.find({ _id: req.params.id });
   Product.findById(id).exec((err, product) => {
     if (err || !product) {
-      res.json("Khong tim thay");
+      res.json("Khong tim thay san pham");
     }
     req.product = product;
     next();

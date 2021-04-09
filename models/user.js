@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
-const crypto = require("crypto");
+import mongoose from "mongoose";
+import crypto from "crypto";
 import { v4 as uuidv4 } from "uuid";
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -40,14 +41,17 @@ const userSchema = new mongoose.Schema(
 
 // vitual field
 
-userSchema.virtual("password").set(function (password) {
-  this._password = password;
-  this.salt = uuidv4();
-  this.hashed_password = this.encrytPassword(password);
-});
+userSchema
+  .virtual("password") // Tạo ra 1 field ảo
+  .set(function (password) {
+    // aaaaa1
+    this.salt = uuidv4(); // unique
+    this.hashed_password = this.encrytPassword(password);
+  });
 
 userSchema.methods = {
   authenticate: function (plainText) {
+    // aaaaa1
     return this.encrytPassword(plainText) === this.hashed_password;
   },
   encrytPassword: function (password) {

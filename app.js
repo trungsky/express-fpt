@@ -6,20 +6,24 @@ import HomePage from "./routes/HomePage";
 import mongoose from "mongoose";
 import auth from "./routes/auth";
 import expressValidator from "express-validator";
+import cors from "cors";
+import RouterUser from "./routes/user";
 dotenv.config();
 
 const app = express();
 app.use(expressValidator());
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(cors({ credentials: "same-origin" }));
 const port = process.env.PORT || 8080;
 // app.use(morgan("combined"));
 
-// Route
+// Routes
 app.use("/api", RouterProduct);
 app.use("/api", RouterCategory);
 app.get("/", HomePage);
 app.use("/api", auth);
+app.use("/api", RouterUser);
 
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -35,5 +39,5 @@ mongoose.connection.on("error", (err) => {
 
 // App listen
 app.listen(port, () => {
-  console.log("Server run at: http://localhost:" + port);
+  console.log("Server running at: http://localhost:" + port);
 });

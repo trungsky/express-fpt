@@ -44,7 +44,7 @@ export const remove = (req, res) => {
   category.remove((err, deleteCategory) => {
     if (err) {
       res.status(400).json({
-        error: errorHandler(err),
+        error: err,
       });
     }
     res.json({

@@ -12,7 +12,7 @@ import {
   categoryById,
 } from "../controllers/category";
 
-router.post("/category/create", create);
+router.post("/category", create);
 router.get("/category/:categoryId", read);
 router.delete("/category/:categoryId", remove);
 // router.put("/category/:categoryId/:userId", update);
