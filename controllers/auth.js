@@ -1,6 +1,7 @@
 import User from "../models/user";
 import jwt from "jsonwebtoken";
 import expressJwt from "express-jwt";
+// import { checkAdmin } from "../validator";
 // import { errorHandler } from "../helpers/dbErrorsHandler";
 
 export const signup = (req, res) => {
@@ -54,7 +55,7 @@ export const isAuth = (req, res, next) => {
   let user = req.profile && req.auth && req.profile._id == req.auth._id;
   if (!user) {
     return res.status(403).json({
-      error: "Access Denied",
+      error: `"Access Denied" ${user}`,
     });
   }
   next();

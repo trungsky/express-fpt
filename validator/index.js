@@ -23,3 +23,9 @@ export const userSignupValidator = (req, res, next) => {
   }
   next();
 };
+
+// export const checkAdmin = (req, res, next) => {
+//   const getUser = req.cookies.t;
+//   console.log(getUser);
+//   next();
+// };

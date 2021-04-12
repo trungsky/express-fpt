@@ -8,9 +8,12 @@ import auth from "./routes/auth";
 import expressValidator from "express-validator";
 import cors from "cors";
 import RouterUser from "./routes/user";
+const cookieParser = require('cookie-parser');
+
 dotenv.config();
 
 const app = express();
+app.use(cookieParser());
 app.use(expressValidator());
 app.use(express.json());
 app.use(express.urlencoded());

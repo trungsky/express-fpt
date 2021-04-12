@@ -14,7 +14,6 @@ export const userById = (req, res, next, id) => {
 export const read = (req, res) => {
   req.profile.hashed_password = undefined;
   req.profile.salt = undefined;
-
   return res.json(req.profile);
 };
 export const update = (req, res) => {
