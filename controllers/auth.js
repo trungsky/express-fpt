@@ -6,10 +6,11 @@ import expressJwt from "express-jwt";
 
 export const signup = (req, res) => {
   const user = new User(req.body);
+  console.log('thông tin user sau khi mã hóa', user);
   user.save((err, user) => {
     if (err) {
       return res.status(400).json({
-        error: err,
+        error: 'Không thể đăng ký tài khoản',
       });
     }
     res.json({ user });

@@ -47,7 +47,7 @@ export const list = async (req, res) => {
 };
 
 export const findById = async (req, res) => {
-  const product = await Product.findOne({ _id: req.params.id })
+  const product = await Product.findOne({ _id: req.params.productId })
     .then((data) => {
       res.json(data);
     })
@@ -56,10 +56,8 @@ export const findById = async (req, res) => {
     });
 };
 
-export const deleteById = async (req, res) => {
-  const product = req.params.id;
-  console.log(product);
-  Product.deleteOne({ _id: product })
+export const remove = async (req, res) => {
+  Product.deleteOne({ _id: req.params.productId })
     .then((data) => {
       res.json(`Xóa ô kê`);
     })
@@ -84,7 +82,6 @@ export const updateById = async (req, res) => {
       });
     }
 
-    //  let product = new Product(fields);
     let product = req.product;
     product = _.assignIn(product, fields);
     if (files.photo) {
@@ -108,7 +105,7 @@ export const updateById = async (req, res) => {
   });
 };
 
-export const getParamId = async (req, res, next, id) => {
+export const productByID = async (req, res, next, id) => {
   //   const product = Product.find({ _id: req.params.id });
   Product.findById(id).exec((err, product) => {
     if (err || !product) {

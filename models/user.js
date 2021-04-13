@@ -44,14 +44,12 @@ const userSchema = new mongoose.Schema(
 userSchema
   .virtual("password") // Tạo ra 1 field ảo
   .set(function (password) {
-    // aaaaa1
     this.salt = uuidv4(); // unique
     this.hashed_password = this.encrytPassword(password);
   });
 
 userSchema.methods = {
   authenticate: function (plainText) {
-    // aaaaa1
     return this.encrytPassword(plainText) === this.hashed_password;
   },
   encrytPassword: function (password) {
