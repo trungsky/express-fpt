@@ -12,8 +12,8 @@ export const create = async (req, res) => {
         error: "Thêm sản phẩm không thành công",
       });
     }
-    const { name, description, price } = fields;
-    if (!name || !description || !price) {
+    const { name, description, price, category } = fields;
+    if (!name || !description || !price || !category) {
       return res.status(400).json({
         error: "Bạn cần nhập đầy đủ thông tin",
       });
@@ -75,10 +75,10 @@ export const updateById = async (req, res) => {
         error: "Sửa sản phẩm không thành công",
       });
     }
-    const { name, description, price } = fields;
-    if (!name || !description || !price) {
+    const { name, description, price, category } = fields;
+    if (!name || !description || !price || !category) {
       return res.status(400).json({
-        error: `Bạn cần nhập đầy đủ thông tin `,
+        error: `All fields are required`,
       });
     }
 
